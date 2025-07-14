@@ -7,18 +7,20 @@ object Translator {
   val morseCode = new MorseCode()
 
   val message = inputHandler.readInput("Please enter a message: ")
-  outputHandler.printOutput(s"Your message is: $message")
-
   val wordToMorse = englishToMorse(message, morseCode.morseCode)
+
+  // Save the value of the below and pass it as arg for the morseToEnglish
   outputHandler.printOutput(s"Morse translation: $wordToMorse")
 
  }
 
  def englishToMorse(word: String, morseCode: Map[Char, String]): String = {
-  val upperCasedLetters = word.toUpperCase()
-  upperCasedLetters
-    .map(letter => morseCode.getOrElse(letter, ""))
-    .mkString(" ")
+  if (word.isEmpty) "Word cannot be empty!"
+  else {
+   word.toUpperCase()
+     .map(letter => morseCode.getOrElse(letter, ""))
+     .mkString(" ")
+  }
  }
 
 

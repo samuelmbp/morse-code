@@ -8,8 +8,10 @@ object Translator {
 
   val sentence = inputHandler.readInput("Please enter a sentence: ")
   val wordConvertedToMorse = englishToMorse(sentence, morseCode.morseCode)
+  val morseConvertedToEnglish = morseToEnglish(wordConvertedToMorse, morseCode.morseCode)
 
   outputHandler.printOutput(s"English to morse: $wordConvertedToMorse")
+  outputHandler.printOutput(s"Morse to english: $morseConvertedToEnglish")
  }
 
  def englishToMorse(sentence: String, morseCode: Map[Char, String]): String = {
@@ -24,9 +26,25 @@ object Translator {
   }
  }
 
+
+ def morseToEnglish(morseSentence: String, morseCode: Map[Char, String]): String = {
+   if (morseSentence.isEmpty) "Morse sentence cannot be empty!"
+   else {
+     val reversedMorseCode = morseCode.map(_.swap)
+     morseSentence
+       .split(" / ")
+       .map(word =>
+         word.split(" ")
+           .map(morseChar => reversedMorseCode.getOrElse(morseChar, ' '))
+           .mkString
+       )
+       .mkString(" ")
+   }
+ }
+
  /*
  TODO:
- 1. Implement the morseToEnglish functionality
+ 1. Implement the morseToEnglish functionality ✅
  2. Implement keep asking for input until "exit" is typed
  3. Optionally include punctuation support
  4. Auto-detect input type

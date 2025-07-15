@@ -8,25 +8,40 @@ object Translator {
    val outputHandler = new OutputHandler()
    val morseCode = new MorseCode()
 
-   loop(inputHandler, outputHandler, morseCode)
+   runTranslator(inputHandler, outputHandler, morseCode)
  }
 
   @tailrec
-  def loop(inputHandler: InputHandler,
-          outputHandler: OutputHandler,
-          morseCode: MorseCode): Unit = {
-   val input = inputHandler.readInput("Enter a sentence (or type 'exit' to quit): ")
+  def runTranslator(inputHandler: InputHandler,
+                    outputHandler: OutputHandler,
+                    morseCode: MorseCode): Unit = {
+   val input = inputHandler.readInput("Enter a sentence (or type 'exit' to quit): ").toUpperCase()
    if (input.toLowerCase() == "exit") {
      outputHandler.printOutput("Exiting program. Goodbye!")
    } else {
      val morse = englishToMorse(input, morseCode.morseCode)
      val english = morseToEnglish(morse, morseCode.morseCode)
 
-     outputHandler.printOutput(s"English to Morse: $morse")
-     outputHandler.printOutput(s"Morse to English: $english")
-     loop(inputHandler, outputHandler, morseCode)
+     outputHandler.printOutput(s"The word '$input' in Morse is: $morse")
+
+     val viewMorseCodeToEnglish = inputHandler.readInput(
+       "Would you like to see the Morse code translated back into English? (yes/no): "
+     )
+     if (viewMorseCodeToEnglish.toLowerCase() == "yes") {
+       outputHandler.printOutput(s"The Morse code '$morse' translated into English is: '$english'")
+     } else {
+       outputHandler.printOutput("Okay, no worries!")
+     }
+
+     val continue = inputHandler.readInput("Would you like to translate another sentence? (yes/no): ")
+     if (continue.toLowerCase() == "yes") {
+       runTranslator(inputHandler, outputHandler, morseCode)
+     } else {
+       outputHandler.printOutput("Goodbye!")
+     }
    }
   }
+  
   def englishToMorse(sentence: String, morseCode: Map[Char, String]): String = {
     if (sentence.isEmpty) "Sentence cannot be empty!"
     else {

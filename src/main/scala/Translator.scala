@@ -6,23 +6,23 @@ object Translator {
   val outputHandler = new OutputHandler()
   val morseCode = new MorseCode()
 
-  val message = inputHandler.readInput("Please enter a message: ")
-  val wordToMorse = englishToMorse(message, morseCode.morseCode)
+  val sentence = inputHandler.readInput("Please enter a sentence: ")
+  val wordConvertedToMorse = englishToMorse(sentence, morseCode.morseCode)
 
-  // Save the value of the below and pass it as arg for the morseToEnglish
-  outputHandler.printOutput(s"Morse translation: $wordToMorse")
-
+  outputHandler.printOutput(s"English to morse: $wordConvertedToMorse")
  }
 
- def englishToMorse(word: String, morseCode: Map[Char, String]): String = {
-  if (word.isEmpty) "Word cannot be empty!"
+ def englishToMorse(sentence: String, morseCode: Map[Char, String]): String = {
+  if (sentence.isEmpty) "Sentence cannot be empty!"
   else {
-   word.toUpperCase()
-     .map(letter => morseCode.getOrElse(letter, ""))
-     .mkString(" ")
+    sentence.toUpperCase()
+      .split(" ")
+      .map(word =>
+        word.map(letter => morseCode.getOrElse(letter, "")).mkString(" ")
+      )
+      .mkString(" / ")
   }
  }
-
 
  /*
  TODO:

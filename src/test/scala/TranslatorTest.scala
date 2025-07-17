@@ -16,7 +16,6 @@ class TranslatorTest extends AnyFunSuite with BeforeAndAfter {
 
   test("should throw an error when sentence is empty") {
     val sentence = ""
-    val morse = new MorseCode
     assertThrows[IllegalArgumentException] {
       Translator.englishToMorse(sentence, morse.morseCode)
     }

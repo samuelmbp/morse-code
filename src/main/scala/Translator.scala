@@ -1,5 +1,4 @@
 import scala.annotation.tailrec
-import scala.util.{Failure, Success}
 
 object Translator {
 
@@ -12,14 +11,15 @@ object Translator {
  }
 
   @tailrec
-  def runTranslator(inputHandler: InputHandler,
-                    outputHandler: OutputHandler,
-                    morseCode: MorseCode): Unit = {
+  def runTranslator(inputHandler: InputHandler, outputHandler: OutputHandler, morseCode: MorseCode): Unit = {
     val input = inputHandler.readInput(
       s"${Colors.YELLOW}Enter a sentence (or type 'exit' to quit): ${Colors.RESET}").toUpperCase()
 
     if (input.toLowerCase() == "exit") {
       outputHandler.printOutput(s"${Colors.RED}Exiting program. Goodbye!${Colors.RESET}")
+    } else if (input.toLowerCase() == "") {
+      outputHandler.printOutput(s"${Colors.RED}Input cannot be empty. Please enter a sentence.${Colors.RESET}")
+      runTranslator(inputHandler, outputHandler, morseCode)
     } else {
       val morse = englishToMorse(input, morseCode.morseCode)
       val english = morseToEnglish(morse, morseCode.morseCode)
@@ -42,7 +42,8 @@ object Translator {
   }
 
   def englishToMorse(sentence: String, morseCode: Map[Char, String]): String = {
-    if (sentence.isEmpty) "Sentence cannot be empty!"
+    if (sentence.isEmpty) 
+      throw new IllegalArgumentException("Sentence cannot be empty!")
     else {
       sentence.toUpperCase()
         .split(" ")
@@ -54,7 +55,8 @@ object Translator {
   }
 
   def morseToEnglish(morseSentence: String, morseCode: Map[Char, String]): String = {
-    if (morseSentence.isEmpty) "Morse sentence cannot be empty!"
+    if (morseSentence.isEmpty)
+      throw new IllegalArgumentException("Morse sentence cannot be empty!")
     else {
      val reversedMorseCode = morseCode.map(_.swap)
      morseSentence

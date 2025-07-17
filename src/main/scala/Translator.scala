@@ -42,7 +42,7 @@ object Translator {
   }
 
   def englishToMorse(sentence: String, morseCode: Map[Char, String]): String = {
-    if (sentence.isEmpty) 
+    if (sentence.isEmpty)
       throw new IllegalArgumentException("Sentence cannot be empty!")
     else {
       sentence.toUpperCase()
@@ -69,20 +69,4 @@ object Translator {
        .mkString(" ")
     }
   }
-
- /*
- TODO:
- 1. Implement the morseToEnglish functionality ✅
- 2. Implement keep asking for input until "exit" is typed ✅
- 3. Optionally include punctuation support ✅
- 4. Auto-detect input type
- 5. Unit testing
-    - English to Morse
-    - Morse to English
-    - Word separation
-    - Invalid inputs
- 6. Add some colors in the terminal for UI ✅
- 7. Add punctuation and numbers for the code morse map ✅
- 8. Add func to ask user if want to translate from 1. EN to Morse or 2. Morse to EN
-  */
 }
